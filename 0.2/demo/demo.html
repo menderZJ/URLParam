@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../js/UrlParam.js"> </script>
+</head>
+<body>
+<div id="main" style="margin-left: auto;margin-right: auto;width: 600px;">
+<div style="text-align: left;float: left">
+    <div>URL adress：(You can use a new URL to rewrite this value )</div>
+    <div><textarea id="urlAddr" style="width: 600px;"  value="" placeholder="Input URL Address"></textarea></div>
+</div>
+<div style="text-align: center;clear: both;">
+    <button onclick="get('params',$id('urlAddr').value)">getParams </button>
+</div>
+<div>
+URL params：<div id="params"> </div>
+    <div>
+        <button onclick="addParam()">addParam</button> (tips:After add params,please click the <strong><i>
+        setParams</i></strong> button)
+    </div>
+    <div><button onclick="set()">setParams</button></div>
+    <div>ParamNames For Del:<input id="paramDel" name="paramDel" value="" /><button onclick="delParam()">delParams
+    </button></div>
+</div>
+<div >
+    <textarea id="URLInfoNew" value="" style="width: 600px;" >  </textarea>
+</div>
+<script>
+    function get(id){
+         var url=arguments[1];
+         var URLInfo=new URL(url);
+         //console.log(URLInfo);
+         var  html='';
+         var i=0;
+         for(p in URLInfo.params){
+             html+='<div>ParamName'+(++i)+':<input id="param'+i+'" name="param" value="'+p+'" />Value'+ i
+                 +':<input id="value'+ i +'" name="val" value="'+URLInfo.params[p]+'"></div>';
+
+         }
+         $id(id).innerHTML=html;
+    }
+    $id=function (id){return document.getElementById(id);}
+    function set(){
+         var params={};
+         var pls=$id('params').children;
+         var k=[],v=[];
+         for(var i=0;i<pls.length;i++){
+             pobj=pls[i].getElementsByTagName('input');
+             k.push(pobj[0].value);
+             v.push(pobj[1].value);
+         }
+         for(var i=0;i<k.length;i++){
+             params[k[i]]=v[i];
+         }
+         $id("URLInfoNew").innerText=(new URL({url:$id('urlAddr').value,'params':params})).toString();
+    }
+    function addParam(){
+        var paramsCount=$id('params').children.length;
+        var pp=document.createElement('div');
+        pp.innerHTML='ParamName'+(++paramsCount)+':<input id="param'+paramsCount+'" name="param" value="" />Value'+
+            paramsCount
+            +':<input id="value'+ paramsCount +'" name="val" value="">';
+        $id('params').append(pp);
+    }
+    function delParam(){
+        $id("URLInfoNew").innerText=(new URL($id('urlAddr').value)).delPrama($id('paramDel').value).toString();
+    }
+    //set href to textarea
+    $id('urlAddr').innerHTML= location.href;
+</script>
+</div>
+</body>
+</html>
