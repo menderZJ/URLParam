@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../lib/UrlParam.js"> </script>
+    <style>
+        div{
+            display: inline-block;
+        }
+        div.row{
+            vertical-align: top;
+            margin:15px 10px;
+            width: 600px;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<div id="main" style="margin-left: auto;margin-right: auto;width: 1200px;display: block">
+    <div style="width: 600px;float: left">
+        <div style="text-align: left;float: left" class="row">
+            <div>URL adress：(You can use a new URL to rewrite this value )</div>
+            <div><textarea id="urlAddr" style="width: 400px;"  value="" placeholder="Input URL Address"></textarea></div>
+        </div>
+        <div class="row" style="text-align: center;clear: both;">
+            <button onclick="get('params',$id('urlAddr').value)">getParams ↓↓</button>
+        </div>
+
+        <div class="row">
+            URL params：<div id="params"> </div>
+        </div>
+        <div class="row">
+            <div style="width: 400px;float: left;">
+                <button onclick="addParam()">addParam</button> (tips:After add params,please click the <strong><i>
+                setParams</i></strong> button)
+            </div>
+            <div ><button onclick="set()">setParams&gt;&gt;</button></div>
+        </div>
+        <div class="row">
+            <div style="width: 400px;float: left;">ParamNames For Del:<input id="paramDel" name="paramDel" value="" />
+            </div>
+            <div>
+                <button onclick="delParam()">delParams&gt;&gt;</button>
+            </div>
+        </div>
+        <div class="row">
+            <div style="width: 400px;float: left;">paramName:<input id="getParamName" name="getParamName" value="" />
+            </div>
+            <div>
+                <button onclick="getP()">get&gt;&gt;</button>
+            </div>
+        </div>
+        <div class="row">
+            <div style="width: 400px;float: left;">paramName:<input id="getParamNameAll" name="getParamNameAll" value="" />
+            </div>
+            <div>
+                <button onclick="getPAll()">getAll&gt;&gt;</button>
+            </div>
+        </div>
+        <div class="row">
+            <div style="width: 400px;float: left;">HasParamName:<input id="hasParamName" name="hasParamName"
+                                                                     value="" />
+            </div>
+            <div>
+                <button onclick="has()">has&gt;&gt;</button>
+            </div>
+        </div>
+        <div class="row">
+            <div style="width: 400px;float: left;">keys: get keys.
+            </div>
+            <div>
+                <button onclick="keys()">keys&gt;&gt;</button>
+            </div>
+        </div>
+        <div class="row">
+            <div style="width: 400px;float: left;">values: get values.See the result in console tool.
+            </div>
+            <div>
+                <button onclick="values()">values&gt;&gt;</button>
+            </div>
+        </div>
+        <div class="row">
+            <div style="width: 400px;float: left;">forEach:Every value apeend alpha 'A'.
+            </div>
+            <div>
+                <button onclick="forEachA()">forEach&gt;&gt;</button>
+            </div>
+        </div>
+        <div class="row">
+            <div style="width: 400px;float: left;">sort:sort by keyNames.
+            </div>
+            <div>
+                <button onclick="sort()">sort&gt;&gt;</button>
+            </div>
+        </div>
+    </div>
+    <div style="width: 500px;float: left">
+        <div class="row">
+            Result:<textarea id="URLInfoNew" value="" style="width: 400px;margin-left: 50px;" rows="20" >  </textarea>
+        </div>
+    </div>
+    <script>
+        function get(id){
+            var url=arguments[1];
+            var URLInfo=new URLParams(url);
+            //console.log(URLInfo.values());
+            var  html='';
+            var i=0;
+            for(p in URLInfo.values()){
+                html+='<div>ParamName'+(++i)+':<input id="param'+i+'" name="param" value="'+p+'" />Value'+ i
+                    +':<input id="value'+ i +'" name="val" value="'+URLInfo.get(p)+'"></div>';
+
+            }
+            $id(id).innerHTML=html;
+        }
+        $id=function (id){return document.getElementById(id);}
+        function set(){
+            var pls=$id('params').children;
+            var url=$id('urlAddr').value;
+            var URLInfo=new URLParams(url);
+            for(var i=0;i<pls.length;i++){
+                pobj=pls[i].getElementsByTagName('input');
+                URLInfo.set(pobj[0].value,pobj[1].value);
+            }
+
+            $id("URLInfoNew").innerText=URLInfo.toString();
+        }
+        function addParam(){
+            var paramsCount=$id('params').children.length;
+            var pp=document.createElement('div');
+            pp.innerHTML='ParamName'+(++paramsCount)+':<input id="param'+paramsCount+'" name="param" value="" />Value'+
+                paramsCount
+                +':<input id="value'+ paramsCount +'" name="val" value="">';
+            $id('params').append(pp);
+        }
+        function delParam(){
+            var url=$id('urlAddr').value;
+            var URLInfo=new URLParams(url);
+            URLInfo.delete($id('paramDel').value);
+            $id("URLInfoNew").innerText=URLInfo.toString();
+        }
+        function getP(){
+            var url=$id('urlAddr').value;
+            var URLInfo=new URLParams(url);
+            var t=URLInfo.get($id('getParamName').value);
+            $id("URLInfoNew").innerText=t;
+        }
+
+        function getPAll(){
+            var url=$id('urlAddr').value;
+            var URLInfo=new URLParams(url);
+            var t=URLInfo.getAll($id('getParamNameAll').value);
+            $id("URLInfoNew").innerText=t;
+        }
+
+        function has(){
+            var url=$id('urlAddr').value;
+            var URLInfo=new URLParams(url);
+            var t=URLInfo.has($id('hasParamName').value);
+            $id("URLInfoNew").innerText=t;
+        }
+        function keys(){
+            var url=$id('urlAddr').value;
+            var URLInfo=new URLParams(url);
+            var t=URLInfo.keys();
+            $id("URLInfoNew").innerText=t;
+        }
+        function values(){
+            var url=$id('urlAddr').value;
+            var URLInfo=new URLParams(url);
+            var t=URLInfo.values();
+            console.log(t);
+            $id("URLInfoNew").innerText=t;
+        }
+        function forEachA(){
+            var url=$id('urlAddr').value;
+            var URLInfo=new URLParams(url);
+            var t='';
+            URLInfo.forEach(function(k,v){
+                t+=k+':'+v+'A;';
+            });
+            console.log(t);
+            $id("URLInfoNew").innerText=t;
+        }
+        function sort(){
+            var url=$id('urlAddr').value;
+            var URLInfo=new URLParams(url);
+            var t='';
+            URLInfo.sort();
+            //console.log(t);
+            $id("URLInfoNew").innerText=URLInfo.toString();
+        }
+        //set href to textarea
+        $id('urlAddr').innerHTML= location.search;
+    </script>
+</div>
+</body>
+</html>
