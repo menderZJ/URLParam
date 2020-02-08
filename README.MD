@@ -26,9 +26,9 @@ Appends a specified key/value pair as a new search parameter,if accept a json ob
 #### URLParams.delete(keyName)
 Deletes the given search parameter, and its associated value, from the list of all search parameters. **Important:** in IE 8 less,please use `remove()` instead.
 #### URLParams.entries()
-	Returns a JSON  of this object.
+Returns a JSON  of this object.
 #### URLParams.forEach(fn)
-	Allows iteration through all values contained in this object via a callback function.
+Walk all values contained in this object via a callback function.
 #### URLParams.get(keyName)
 Returns the first value associated with the given search parameter.
 #### URLParams.getAll(keyName)
@@ -39,7 +39,7 @@ Returns a Boolean indicating if such a given parameter exists.
 Returns a Array object of params's keys.
 #### URLParams.set(key,value)
 Sets the value associated with a given search parameter to the given value.If one key is existed ,then replace the
-  value of the key.If you wanna set more params,you can use **append()**
+value of the key.If you wanna set more params,you can use **append()**
 #### URLParams.sort(fn)
 Sorts all key/value pairs, if any, by their keys.
 #### URLParams.toString()
