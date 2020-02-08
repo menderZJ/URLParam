@@ -12,7 +12,7 @@ Since 2.0, it is compatibled IE7+. And 2.0 is realized the web api ***[URLSearch
 ~~~      
 2.now,you can use  UrlParam's method on your js.
  
-## 2. APIs
+##  APIs
 
 ### Constructor
 URLParams()
