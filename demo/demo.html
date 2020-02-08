@@ -132,12 +132,19 @@
             pp.innerHTML='ParamName'+(++paramsCount)+':<input id="param'+paramsCount+'" name="param" value="" />Value'+
                 paramsCount
                 +':<input id="value'+ paramsCount +'" name="val" value="">';
-            $id('params').append(pp);
+            $id('params').appendChild(pp);
         }
         function delParam(){
             var url=$id('urlAddr').value;
             var URLInfo=new URLParams(url);
-            URLInfo.delete($id('paramDel').value);
+            try {
+                URLInfo['delete']($id('paramDel').value);
+            }
+            catch (e) {
+                URLInfo.remove($id('paramDel').value);  //for IE 8 less
+            }
+
+
             $id("URLInfoNew").innerText=URLInfo.toString();
         }
         function getP(){
@@ -192,7 +199,7 @@
             $id("URLInfoNew").innerText=URLInfo.toString();
         }
         //set href to textarea
-        $id('urlAddr').innerHTML= location.search;
+        $id('urlAddr').value= location.search;
     </script>
 </div>
 </body>
